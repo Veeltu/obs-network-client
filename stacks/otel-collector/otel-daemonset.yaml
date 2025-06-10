@@ -162,7 +162,6 @@ service:
       processors: [batch, resource/filelog]
       exporters: [otlphttp/loki]
     metrics:
-      receivers: [kubeletstats, hostmetrics]
-      # receivers: [kubeletstats, hostmetrics, prometheus_simple/kafka_jmx]
+      receivers: [kubeletstats, hostmetrics, prometheus_simple/kafka_jmx]
       processors: [batch, k8sattributes]
       exporters: [otlphttp/prometheus]
