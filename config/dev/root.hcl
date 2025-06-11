@@ -1,15 +1,21 @@
 locals {
+  namespace = "network"
   # Load Shared/Common Variables that can be used in all terraform configurations. 
   # Can be override via Terragrunt.hcl
-  common_vars      = read_terragrunt_config(find_in_parent_folders("common.hcl"))
-  impersonate_vars = read_terragrunt_config(find_in_parent_folders("impersonate.hcl"))
+  common_vars      = read_terragrunt_config("../common.hcl")
+  impersonate_vars = read_terragrunt_config("../impersonate.hcl")
   working_dir_fullpath = get_terragrunt_dir()
   working_dir_parts = split("/", local.working_dir_fullpath)
-  secret_suffix = "${element(local.working_dir_parts, length(local.working_dir_parts)-1)}-${element(local.working_dir_parts, length(local.working_dir_parts)-2)}"
+
+  # secret_suffix     = "network-otel-collector-dev"
+  secret_suffix = "${local.namespace}-${element(local.working_dir_parts, length(local.working_dir_parts)-1)}-${element(local.working_dir_parts, length(local.working_dir_parts)-2)}"
+
+  # secret_suffix     = "otel-collector-dev"
+  # secret_suffix = "${element(local.working_dir_parts, length(local.working_dir_parts)-1)}-${element(local.working_dir_parts, length(local.working_dir_parts)-2)}"
+
   config_path = "~/.kube/config"
-  # config_context = "microk8s"
   config_context = "pndrs-observability"
-  #config_context = "gke_smanke-dev-test-5mkmp_europe-west3_autopilot-cluster-1"
+  # config_context = "gke_smanke-dev-test-5mkmp_europe-west3_autopilot-cluster-1"
 }
 
 generate "provider" {
