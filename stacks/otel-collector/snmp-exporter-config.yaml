@@ -1,0 +1,21 @@
+
+auths:
+  vyos:
+    security_level: authPriv
+    username: obs
+    password: ${SNMP_AUTH_PASSWORD}
+    auth_protocol: SHA
+    priv_protocol: AES
+    priv_password: ${SNMP_PRIVACY_PASSWORD}
+    version: 3
+
+modules:
+  vyos_system:
+    walk:
+    - 1.3.6.1.2.1.1
+    metrics:
+    - name: sysContact
+      oid: 1.3.6.1.2.1.1.4
+      type: DisplayString
+      help: The textual identification of the contact person for this managed node,
+        together with information on how to contact this person - 1.3.6.1.2.1.1.4
