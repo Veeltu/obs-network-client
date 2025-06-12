@@ -299,8 +299,8 @@ exporters:
         mechanism: SCRAM-SHA-512
         version: 1
 # for testing 
-  prometheus:
-    endpoint: "0.0.0.0:8888"
+  # prometheus:
+  #   endpoint: "0.0.0.0:8888"
 
   # otlp/tempo:
   #   endpoint: "http://tempo.tempo:4317" 
