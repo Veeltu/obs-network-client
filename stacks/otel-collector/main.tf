@@ -298,6 +298,11 @@ resource "kubernetes_deployment_v1" "collector" {
 
         # Volume for TLS certificates
         # Uses projected volume to combine multiple certificate secrets
+
+        #  - Creates a projected volume that combines TLS secrets for multiple domains.
+        #  - For each domain in local.certs, it exposes two files in the container: a certificate and a private key, with appropriate names.
+        #  - Allows applications to easily and securely access certificates directly from the container's file system.
+
         volume {
           name = "secrets"
           projected {
@@ -324,5 +329,5 @@ resource "kubernetes_deployment_v1" "collector" {
   }
 
   # Ensure certificates are created before the deployment
-  depends_on = [kubernetes_manifest.certs]
+  # depends_on = [kubernetes_manifest.certs]
 }
