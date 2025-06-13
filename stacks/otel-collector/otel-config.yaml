@@ -124,6 +124,20 @@ receivers:
               - hrSWRunPerf  # Software performance
               - hrStorage  # Storage metrics
               - hrSWRun  # Running software
+
+              # UCD System Stats
+              # https://mibbrowser.online/mibdb_search.php?mib=UCD-SNMP-MIB
+              # https://github.com/prometheus/snmp_exporter/blob/16185db0f330e5e6eadf8cd83741cde80320edfe/snmp.yml#L44975C3-L44975C19
+              - ucd_memory
+
+              # UCD System Stats
+              # https://mibbrowser.online/mibdb_search.php?mib=UCD-SNMP-MIB
+              # https://github.com/prometheus/snmp_exporter/blob/16185db0f330e5e6eadf8cd83741cde80320edfe/snmp.yml#L44975C3-L44975C19
+              - ucd_system_stats
+
+              - ip_mib
+
+              - cisco_fc_fe
               
           # Relabeling to properly set up SNMP targets
           relabel_configs:
@@ -264,7 +278,7 @@ exporters:
     brokers:  # Kafka broker addresses
       - otel-kafka-bootstrap.kafka-cluster:9094
     protocol_version: 3.9.0  # Kafka protocol version
-    topic: otel-traces  # Kafka topic for traces
+    topic: poc-otel-network-traces  # Kafka topic for traces
     #encoding: otlp_json  # readable for debugging, default is pb (protobuf)
     auth:  # Authentication for Kafka
       sasl:
@@ -277,7 +291,7 @@ exporters:
     brokers:
       - otel-kafka-bootstrap.kafka-cluster:9094
     protocol_version: 3.9.0
-    topic: otel-metrics  # Kafka topic for metrics
+    topic: poc-otel-network-metrics  # Kafka topic for metrics
     #encoding: otlp_json  # readable for debugging, default is pb
     auth:
       sasl:
@@ -290,7 +304,7 @@ exporters:
     brokers:
       - otel-kafka-bootstrap.kafka-cluster:9094
     protocol_version: 3.9.0
-    topic: otel-logs  # Kafka topic for logs
+    topic: poc-otel-network-logs  # Kafka topic for logs
     #encoding: otlp_json  # readable for debugging, default is pb
     auth:
       sasl:
@@ -335,34 +349,28 @@ service:
     metrics/k8s_cluster:
       receivers: [k8s_cluster]
       exporters: [kafka/metrics]
-      exporters: [debug]
     
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
-      # exporters: [kafka/traces, debug]
+      exporters: [kafka/traces, debug]
 
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
-      # exporters: [kafka/logs, debug]
+      exporters: [kafka/logs, debug]
       
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [debug]
-      # exporters: [kafka/metrics]
+      exporters: [kafka/metrics, debug]
 
     logs/syslog-test:
       receivers: [syslog/rfc5424, syslog/rfc5424tls]
       #processors: [memory_limiter, batch]
-      exporters: [debug]
-      # exporters: [kafka/logs, debug]
+      exporters: [kafka/logs, debug]
 
     metrics/vyos:
         receivers: [prometheus/vyos]
         processors: [memory_limiter, batch]
-        exporters: [debug]
-        # exporters: [kafka/metrics]
+        exporters: [kafka/metrics, debug]
