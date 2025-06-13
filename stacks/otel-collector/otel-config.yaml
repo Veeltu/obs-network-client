@@ -269,7 +269,9 @@ processors:
 
 
 extensions:
-  #zpages: {}  # Commented out ZPages extension for debugging
+  zpages:
+    endpoint: 0.0.0.0:55679
+  # zpages: {}  # Commented out ZPages extension for debugging
 
 exporters:
   # Kafka exporters for different telemetry types
