@@ -347,6 +347,7 @@ exporters:
     verbosity: basic # basic/detailed 
 
 service:
+  extensions: [zpages]
   pipelines: 
     metrics/k8s_cluster:
       receivers: [k8s_cluster]

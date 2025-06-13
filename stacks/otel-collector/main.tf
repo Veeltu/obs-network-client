@@ -105,6 +105,14 @@ resource "kubernetes_service_v1" "collector" {
       protocol    = "UDP"
       name        = "syslogudp"
     }
+
+    port {
+      port        = 55679
+      target_port = 55679
+      protocol    = "TCP"
+      name        = "zpages"
+    }
+
   }
 }
 
