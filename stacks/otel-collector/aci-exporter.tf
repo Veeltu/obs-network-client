@@ -1,5 +1,3 @@
-
-
 resource "kubernetes_deployment" "aci_exporter" {
   metadata {
     name      = "aci-exporter"
@@ -25,16 +23,31 @@ resource "kubernetes_deployment" "aci_exporter" {
         container {
           name  = "aci-exporter"
           image = "takalele/aci-exporter:latest"
+          args = [
+            "--config.file=/etc/aci-exporter/aci-exporter.yaml"
+          ]
           port {
             container_port = 9300
             name           = "http-metrics"
             protocol       = "TCP"
+          }
+          volume_mount {
+            name       = "aci-exporter-config"
+            mount_path = "/etc/aci-exporter"
+            read_only  = true
+          }
+        }
+        volume {
+          name = "aci-exporter-config"
+          config_map {
+            name = kubernetes_config_map.aci_exporter_config.metadata[0].name
           }
         }
       }
     }
   }
 }
+
 
 
 resource "kubernetes_service" "aci_exporter" {
