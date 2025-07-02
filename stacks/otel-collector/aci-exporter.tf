@@ -40,9 +40,9 @@ resource "kubernetes_deployment" "aci_exporter" {
       spec {
         container {
           name  = "aci-exporter"
-          image = "takalele/aci-exporter:latest"
+          image = "opsdis/aci-exporter:latest"
           args = [
-            "--config.file=/dps/monitoring/mon_aci_exporter/etc/config.yaml"
+            "--config.file=/etc/aci-exporter/config.yaml"
           ]
           port {
             container_port = 9300
@@ -51,7 +51,7 @@ resource "kubernetes_deployment" "aci_exporter" {
           }
           volume_mount {
             name       = "aci-exporter-config"
-            mount_path = "/dps/monitoring/mon_aci_exporter/etc"
+            mount_path = "/etc/aci-exporter"
             read_only  = true
           }
         }
