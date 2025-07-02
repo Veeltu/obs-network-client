@@ -52,6 +52,7 @@ resource "kubernetes_deployment" "aci_exporter" {
           volume_mount {
             name       = "aci-exporter-config"
             mount_path = "/etc/aci-exporter"
+            sub_path   = "config.yaml"
             read_only  = true
           }
         }
