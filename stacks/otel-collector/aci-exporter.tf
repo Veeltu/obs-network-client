@@ -1,25 +1,5 @@
 
 
-resource "kubernetes_config_map" "aci_exporter_config" {
-  metadata {
-    name      = "aci-exporter-config"
-    namespace = kubernetes_namespace.network.metadata[0].name
-  }
-  data = {
-    "aci-exporter.yaml" = <<-EOT
-apic:
-  url: "https://apic.example.com"
-  username: "admin"
-  password: "123"
-metrics:
-  - name: "fabricHealth"
-    class_name: "fabricHealthTotal"
-    labels: ["dn"]
-    values: ["cur","maxSev"]
-EOT
-  }
-}
-
 resource "kubernetes_deployment" "aci_exporter" {
   metadata {
     name      = "aci-exporter"
@@ -43,34 +23,19 @@ resource "kubernetes_deployment" "aci_exporter" {
       }
       spec {
         container {
-          name = "aci-exporter"
-          #   image = "opsdis/aci-exporter:latest"
+          name  = "aci-exporter"
           image = "takalele/aci-exporter:latest"
-
-          #   args = [
-          #     "--config.file=/config/aci-exporter.yaml"
-          #   ]
           port {
             container_port = 9300
             name           = "http-metrics"
             protocol       = "TCP"
-          }
-          volume_mount {
-            name       = "aci-exporter-config"
-            mount_path = "/config"
-            read_only  = true
-          }
-        }
-        volume {
-          name = "aci-exporter-config"
-          config_map {
-            name = kubernetes_config_map.aci_exporter_config.metadata[0].name
           }
         }
       }
     }
   }
 }
+
 
 resource "kubernetes_service" "aci_exporter" {
   metadata {
