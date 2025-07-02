@@ -239,8 +239,6 @@ extensions:
   # zpages: {}  # Commented out ZPages extension for debugging
 
 exporters:
-  debug:
-    verbosity: detailed
   # Kafka exporters for different telemetry types
   # https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/exporter/kafkaexporter/README.md
   kafka/traces:  # Kafka exporter for traces
@@ -311,7 +309,7 @@ exporters:
 
   # https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/debugexporter/README.md
   debug: 
-    verbosity: basic # basic/detailed 
+    verbosity: detailed # basic/detailed 
 
 service:
   telemetry:
