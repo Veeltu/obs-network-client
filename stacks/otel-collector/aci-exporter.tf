@@ -55,8 +55,9 @@ resource "kubernetes_deployment" "aci_exporter" {
           }
 
           env {
-            name  = "ACI_EXPORTER_CONFIG"
-            value = "config.yaml"
+            name = "ACI_EXPORTER_CONFIG"
+            # value = "config.yaml"
+            value = "/etc/aci-exporter/config.yaml"
           }
         }
 
