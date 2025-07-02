@@ -55,6 +55,20 @@ resource "kubernetes_secret" "gw_tls_traefik" {
 
   depends_on = [kubernetes_namespace.traefik]
 }
+resource "kubernetes_secret" "gw_tls_otel_collector" {
+  metadata {
+    name      = "gw-observability-test-pndrs-de"
+    namespace = kubernetes_namespace.otel_collector.metadata[0].name
+  }
+
+  type = "kubernetes.io/tls"
+  data = {
+    "tls.crt" = tls_self_signed_cert.gw_cert.cert_pem
+    "tls.key" = tls_private_key.gw_key.private_key_pem
+  }
+
+  depends_on = [kubernetes_namespace.traefik]
+}
 
 
 
