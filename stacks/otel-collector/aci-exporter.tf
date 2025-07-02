@@ -1,3 +1,24 @@
+resource "kubernetes_config_map" "aci_exporter_config" {
+  metadata {
+    name      = "aci-exporter-config"
+    namespace = kubernetes_namespace.network.metadata[0].name
+  }
+  data = {
+    "aci-exporter.yaml" = <<-EOT
+apic:
+  url: "https://apic.example.com"
+  username: "admin"
+  password: "haslo123"
+metrics:
+  - name: "fabricHealth"
+    class_name: "fabricHealthTotal"
+    labels: ["dn"]
+    values: ["cur","maxSev"]
+EOT
+  }
+}
+
+
 resource "kubernetes_deployment" "aci_exporter" {
   metadata {
     name      = "aci-exporter"
