@@ -7,21 +7,21 @@
 # #   ])
 # # }
 
-# resource "kubernetes_namespace" "traefik" {
-#   metadata {
-#     name = "traefik"
-#     labels = {
-#       shared-gateway-access = "true"
-#     }
-#   }
+resource "kubernetes_namespace" "traefik" {
+  metadata {
+    name = "traefik"
+    labels = {
+      shared-gateway-access = "true"
+    }
+  }
 
-#   lifecycle {
-#     ignore_changes = [
-#       metadata[0].annotations["cattle.io/status"],
-#       metadata[0].annotations["lifecycle.cattle.io/create.namespace-auth"],
-#     ]
-#   }
-# }
+  lifecycle {
+    ignore_changes = [
+      metadata[0].annotations["cattle.io/status"],
+      metadata[0].annotations["lifecycle.cattle.io/create.namespace-auth"],
+    ]
+  }
+}
 
 # # https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
 # resource "helm_release" "traefik" {
