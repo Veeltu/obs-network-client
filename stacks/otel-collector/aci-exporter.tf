@@ -40,7 +40,7 @@ resource "kubernetes_deployment" "aci_exporter" {
       spec {
         container {
           name  = "aci-exporter"
-          image = "opsdis/aci-exporter:latest"
+          image = "takalele/aci-exporter:latest"
           args = [
             "--config.file=/dps/monitoring/mon_aci_exporter/etc/aci-exporter/config.yaml"
           ]
