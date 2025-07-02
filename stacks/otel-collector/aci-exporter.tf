@@ -40,9 +40,9 @@ resource "kubernetes_deployment" "aci_exporter" {
       spec {
         container {
           name  = "aci-exporter"
-          image = "takalele/aci-exporter:latest"
+          image = "ghcr.io/opsdis/aci-exporter:latest"
           args = [
-            "--config.file=/dps/monitoring/mon_aci_exporter/etc/aci-exporter/config.yaml"
+            "--config.file=/etc/aci-exporter/config.yaml"
           ]
           port {
             container_port = 9300
