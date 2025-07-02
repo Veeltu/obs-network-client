@@ -90,10 +90,10 @@ resource "kubernetes_service" "aci_exporter" {
     }
 
     port {
+      name        = "metrics"
       port        = 9643
-      target_port = "metrics"
-      protocol    = "TCP"
-      name        = "http"
+      target_port = 9643
+      # protocol    = "TCP"
     }
 
     type = "ClusterIP"
