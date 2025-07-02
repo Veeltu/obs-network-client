@@ -27,7 +27,7 @@ resource "tls_self_signed_cert" "gw_cert" {
   dns_names = ["gw.observability.test.pndrs.de"]
 }
 
-resource "kubernetes_secret" "gw_tls" {
+resource "kubernetes_secret" "gw_tls_netowrk" {
   metadata {
     name      = "gw-observability-test-pndrs-de"
     namespace = kubernetes_namespace.network.metadata[0].name
@@ -41,7 +41,7 @@ resource "kubernetes_secret" "gw_tls" {
 
   depends_on = [kubernetes_namespace.network]
 }
-resource "kubernetes_secret" "gw_tls" {
+resource "kubernetes_secret" "gw_tls_traefik" {
   metadata {
     name      = "gw-observability-test-pndrs-de"
     namespace = kubernetes_namespace.traefik
