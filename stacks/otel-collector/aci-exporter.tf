@@ -44,7 +44,7 @@ resource "kubernetes_deployment" "aci_exporter" {
           name  = "aci-exporter"
           image = "takalele/aci-exporter:latest"
 
-          command = ["/aci-exporter"]
+          #   command = ["/aci-exporter"]
 
           args = [
             "--config.file=/etc/aci-exporter/aci-exporter.yaml"
