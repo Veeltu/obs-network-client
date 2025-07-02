@@ -42,7 +42,7 @@ resource "kubernetes_deployment" "aci_exporter" {
           name  = "aci-exporter"
           image = "opsdis/aci-exporter:latest"
           args = [
-            "--config.file=/etc/aci-exporter/config.yaml"
+            "--config.file=/dps/monitoring/mon_aci_exporter/etc/aci-exporter/config.yaml"
           ]
           port {
             container_port = 9300
