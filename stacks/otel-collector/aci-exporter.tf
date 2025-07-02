@@ -4,15 +4,7 @@ resource "kubernetes_config_map" "aci_exporter_config" {
     namespace = kubernetes_namespace.network.metadata[0].name
   }
   data = {
-    "config.yaml" = <<-EOT
-fabrics:
-  myfabric:
-    apic: https://apic.example.com
-    username: admin
-    password: haslo123
-    query_groups:
-      - default
-EOT
+    "config.yaml" = file("aci-exporter-config.yaml")
   }
 }
 
@@ -24,43 +16,62 @@ resource "kubernetes_deployment" "aci_exporter" {
       app = "aci-exporter"
     }
   }
+
   spec {
     replicas = 1
+
     selector {
       match_labels = {
         app = "aci-exporter"
       }
     }
+
     template {
       metadata {
         labels = {
           app = "aci-exporter"
         }
       }
+
       spec {
         container {
-          name  = "aci-exporter"
-          image = "ghcr.io/opsdis/aci-exporter:latest"
-          args = [
-            "--config.file=/etc/aci-exporter/config.yaml"
-          ]
+          name              = "aci-exporter"
+          image             = "europe-west3-docker.pkg.dev/nz-mgmt-shared-artifacts-8c85/ghcr-io/opsdis/aci-exporter:latest"
+          image_pull_policy = "IfNotPresent"
+
           port {
-            container_port = 9300
-            name           = "http-metrics"
-            protocol       = "TCP"
+            container_port = 9643
+            name           = "metrics"
           }
+
           volume_mount {
-            name       = "aci-exporter-config"
+            name       = "config"
             mount_path = "/etc/aci-exporter"
-            sub_path   = "config.yaml"
-            read_only  = true
+          }
+
+          volume_mount {
+            name       = "config-d"
+            mount_path = "/etc/aci-exporter/config.d"
+          }
+
+          env {
+            name  = "ACI_EXPORTER_CONFIG"
+            value = "config.yaml"
           }
         }
+
         volume {
-          name = "aci-exporter-config"
+          name = "config"
+
           config_map {
             name = kubernetes_config_map.aci_exporter_config.metadata[0].name
           }
+        }
+
+        volume {
+          name = "config-d"
+
+          empty_dir {}
         }
       }
     }
@@ -72,16 +83,19 @@ resource "kubernetes_service" "aci_exporter" {
     name      = "aci-exporter"
     namespace = kubernetes_namespace.network.metadata[0].name
   }
+
   spec {
     selector = {
       app = "aci-exporter"
     }
+
     port {
-      name        = "http-metrics"
-      port        = 9300
-      target_port = 9300
+      port        = 9643
+      target_port = "metrics"
       protocol    = "TCP"
+      name        = "http"
     }
+
     type = "ClusterIP"
   }
 }
