@@ -44,7 +44,7 @@ resource "kubernetes_secret" "gw_tls_netowrk" {
 resource "kubernetes_secret" "gw_tls_traefik" {
   metadata {
     name      = "gw-observability-test-pndrs-de"
-    namespace = kubernetes_namespace.traefik
+    namespace = kubernetes_namespace.traefik.metadata[0].name
   }
 
   type = "kubernetes.io/tls"
