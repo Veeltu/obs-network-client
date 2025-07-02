@@ -18,7 +18,6 @@ EOT
   }
 }
 
-
 resource "kubernetes_deployment" "aci_exporter" {
   metadata {
     name      = "aci-exporter"
@@ -44,9 +43,13 @@ resource "kubernetes_deployment" "aci_exporter" {
         container {
           name  = "aci-exporter"
           image = "takalele/aci-exporter:latest"
+
+          command = ["/aci-exporter"]
+
           args = [
             "--config.file=/etc/aci-exporter/aci-exporter.yaml"
           ]
+
           port {
             container_port = 9300
             name           = "http-metrics"
@@ -68,8 +71,6 @@ resource "kubernetes_deployment" "aci_exporter" {
     }
   }
 }
-
-
 
 resource "kubernetes_service" "aci_exporter" {
   metadata {
