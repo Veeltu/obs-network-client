@@ -46,9 +46,9 @@ resource "kubernetes_deployment" "aci_exporter" {
 
           #   command = ["/aci-exporter"]
 
-          args = [
-            "--config.file=/etc/aci-exporter/aci-exporter.yaml"
-          ]
+          #   args = [
+          #     "--config.file=/etc/aci-exporter/aci-exporter.yaml"
+          #   ]
 
           port {
             container_port = 9300
