@@ -2,6 +2,13 @@
 
 # https://doc.traefik.io/traefik/routing/providers/kubernetes-gateway/
 # https://gateway-api.sigs.k8s.io/guides/simple-gateway/
+resource "kubernetes_namespace" "otel_collector" {
+  metadata {
+    name = "otel-collector"
+  }
+}
+
+
 resource "kubernetes_manifest" "otel_gateway" {
   field_manager {
     force_conflicts = true
