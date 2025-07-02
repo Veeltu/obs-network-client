@@ -1,5 +1,5 @@
 # Exporter port
-port: 9643
+port: 0.0.0.0:9643
 # Configuration file name default without postfix
 config: config
 # The prefix of the metrics
@@ -57,7 +57,7 @@ fabrics:
 #openmetrics: true
 metric_format:
   # Output in openmetrics format, default false
-  openmetrics: false
+  openmetrics: true
   # Transform all label keys to lower case format, default false. E.g. oobMgmtAddr will be oobmgmtaddr
   label_key_to_lower_case: false
   # Transform all label keys to snake case format, default false. E.g. oobMgmtAddr will be oob_mgmt_addr
