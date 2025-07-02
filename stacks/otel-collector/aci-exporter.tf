@@ -47,9 +47,9 @@ resource "kubernetes_deployment" "aci_exporter" {
           #   image = "opsdis/aci-exporter:latest"
           image = "takalele/aci-exporter:latest"
 
-          args = [
-            "--config.file=/config/aci-exporter.yaml"
-          ]
+          #   args = [
+          #     "--config.file=/config/aci-exporter.yaml"
+          #   ]
           port {
             container_port = 9300
             name           = "http-metrics"
