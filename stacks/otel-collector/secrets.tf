@@ -29,7 +29,7 @@ resource "tls_self_signed_cert" "gw_cert" {
 
 resource "kubernetes_secret" "gw_tls" {
   metadata {
-    name      = "gw-observability-tls"
+    name      = "gw-observability-test-pndrs-de"
     namespace = kubernetes_namespace.network.metadata[0].name
   }
 
