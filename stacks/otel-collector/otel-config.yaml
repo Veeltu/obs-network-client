@@ -135,9 +135,6 @@ receivers:
               # https://github.com/prometheus/snmp_exporter/blob/16185db0f330e5e6eadf8cd83741cde80320edfe/snmp.yml#L44975C3-L44975C19
               - ucd_system_stats
 
-              - ip_mib
-
-              - cisco_fc_fe
               
           # Relabeling to properly set up SNMP targets
           relabel_configs:

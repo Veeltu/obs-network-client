@@ -1,1 +1,2 @@
 .vscode/
+/config/dev/otel-collector/.terragrunt-cache
