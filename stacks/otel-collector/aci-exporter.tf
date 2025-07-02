@@ -4,16 +4,14 @@ resource "kubernetes_config_map" "aci_exporter_config" {
     namespace = kubernetes_namespace.network.metadata[0].name
   }
   data = {
-    "aci-exporter.yaml" = <<-EOT
-apic:
-  url: "https://apic.example.com"
-  username: "admin"
-  password: "haslo123"
-metrics:
-  - name: "fabricHealth"
-    class_name: "fabricHealthTotal"
-    labels: ["dn"]
-    values: ["cur","maxSev"]
+    "config.yaml" = <<-EOT
+fabrics:
+  myfabric:
+    apic: https://apic.example.com
+    username: admin
+    password: haslo123
+    query_groups:
+      - default
 EOT
   }
 }
@@ -43,13 +41,9 @@ resource "kubernetes_deployment" "aci_exporter" {
         container {
           name  = "aci-exporter"
           image = "takalele/aci-exporter:latest"
-
-          #   command = ["/aci-exporter"]
-
-          #   args = [
-          #     "--config.file=/etc/aci-exporter/aci-exporter.yaml"
-          #   ]
-
+          args = [
+            "--config.file=/dps/monitoring/mon_aci_exporter/etc/config.yaml"
+          ]
           port {
             container_port = 9300
             name           = "http-metrics"
@@ -57,7 +51,7 @@ resource "kubernetes_deployment" "aci_exporter" {
           }
           volume_mount {
             name       = "aci-exporter-config"
-            mount_path = "/etc/aci-exporter"
+            mount_path = "/dps/monitoring/mon_aci_exporter/etc"
             read_only  = true
           }
         }
