@@ -12,7 +12,7 @@ resource "tls_self_signed_cert" "gw_cert" {
 
   subject {
     common_name  = "gw.observability.test.pndrs.de"
-    organization = ["pndrs"]
+    organization = "pndrs"
   }
 
   validity_period_hours = 8760 # 1 rok
