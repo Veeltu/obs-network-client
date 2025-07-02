@@ -348,29 +348,34 @@ service:
   pipelines: 
     metrics/k8s_cluster:
       receivers: [k8s_cluster]
-      exporters: [kafka/metrics]
-    
+      # exporters: [kafka/metrics]
+      exporters: [debug]
     traces:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [kafka/traces, debug]
+      # exporters: [kafka/traces, debug]
+      exporters: [debug]
 
     logs:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [kafka/logs, debug]
+      # exporters: [kafka/logs, debug]
+      exporters: [debug]
       
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
-      exporters: [kafka/metrics, debug]
+      # exporters: [kafka/metrics, debug]
+      exporters: [debug]
 
     logs/syslog-test:
       receivers: [syslog/rfc5424, syslog/rfc5424tls]
       #processors: [memory_limiter, batch]
-      exporters: [kafka/logs, debug]
+      # exporters: [kafka/logs, debug]
+      exporters: [debug]
 
     metrics/vyos:
         receivers: [prometheus/vyos]
         processors: [memory_limiter, batch]
-        exporters: [kafka/metrics, debug]
+        # exporters: [kafka/metrics, debug]
+        exporters: [debug]
